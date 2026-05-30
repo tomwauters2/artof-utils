@@ -52,9 +52,10 @@ class RobotManager(metaclass=Singleton):
         print("Load Field ")
         self.field = FieldManager(get_current_field_name(), gdf)
         as_applied = path.join(paths.fields, self.field.info.name, 'rasters')
-        visualisation_manager.initialize_field(self.field.info.bounds, resolution=0.000001, as_applied_path=as_applied )
+        visualisation_manager.initialize_field(self.field.info.bounds, resolution=0.000001, as_applied_path=as_applied)
         visualisation_manager.load_static_layers(field=self.field)
 
+       
     @staticmethod
     def get_navigation_modes():
         if robot_manager.platform_settings is None:
@@ -110,7 +111,7 @@ class RobotManager(metaclass=Singleton):
         robot_ref_state = redis_manager.get_json_value("robot.ref.state")
         if robot_ref_state is None:
             return
-        robot_ref_state["T"] = [x, y, 0.0]
+        robot_ref_state["T"] = [float(x), float(y), 0.0]
         if yaw is not None:
             robot_ref_state["R"] = [0.0, 0.0, yaw]
         redis_manager.set_json_value("robot.ref.state", robot_ref_state)
